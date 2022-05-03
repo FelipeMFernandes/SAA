@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sistema de aprovação de alvarás</title>
+
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Canvas JS -->
+    <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+    <!-- Materalize -->
+    <link rel="stylesheet" href="libs\materialize\css\materialize.css">
+    <script src="libs\materialize\js\materialize.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+    <!-- Navigation -->
+    <script src="http://davidchouse.github.io/Leaflet.NavBar/Leaflet.NavBar.js"></script>
+    <link href="http://davidchouse.github.io/Leaflet.NavBar/Leaflet.NavBar.css " rel="stylesheet" />
+    <!-- FullScreen -->
+    <script src="https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js"></script>
+    <link href="https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css" rel="stylesheet" />
+    <!-- Bookmarks -->
+    <script src="https://rawgit.com/w8r/Leaflet.Bookmarks/master/dist/L.Control.Bookmarks.js"></script>
+    <link href="https://rawgit.com/w8r/Leaflet.Bookmarks/master/dist/leaflet.bookmarks.css" rel="stylesheet" />
+    <!-- Meansure -->
+    <script src="http://ljagis.github.io/leaflet-measure/leaflet-measure.js"></script>
+    <link href="http://ljagis.github.io/leaflet-measure/leaflet-measure.css" rel="stylesheet" />
+    <!-- Coordinates -->
+    <script src="https://www.zimmi.cz/Leaflet-Coordinates-Control/Control.Coordinates.js"></script>
+    <link href="https://www.zimmi.cz/Leaflet-Coordinates-Control/Control.Coordinates.css" rel="stylesheet" />
+    <!-- Easy Button -->
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
+    <!-- Compass -->
+    <script src="https://opengeo.tech/maps/leaflet-compass/src/leaflet-compass.js"></script>
+    <link rel="stylesheet" href="https://opengeo.tech/maps/leaflet-compass/src/leaflet-compass.css">
+    <!-- Legend -->
+    <script src="https://ptma.github.io/Leaflet.Legend/src/leaflet.legend.js"></script>
+    <link rel="stylesheet" href="https://ptma.github.io/Leaflet.Legend/src/leaflet.legend.css">
+    <!-- Print -->
+    <script src="https://igor-vladyka.github.io/leaflet.browser.print/dist/leaflet.browser.print.min.js"></script>
+
+    <!-- Local -->
+    <link type="text/css" rel="stylesheet" href="main.css">
+    <script type="text/javascript" src="js/basemaps.js"></script>
+    <script type="text/javascript" src="js/frames.js"></script>
+    <script type="text/javascript" src="js/layers.js"></script>
+    <script type="text/javascript" src="js/tools.js"></script>
+    <script type="text/javascript" src="js/mapping.js"></script>
+    <script type="text/javascript" src="js/utils.js"></script>
+    <script type="text/javascript" src="js/sidebar.js"></script>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="sidebar leaflet-bar leaflet-right">
+        <div class="sidebar-tabs">
+            <span class="sidebar-tab leaflet-control" title="Abrir painel" id="sidebar-icon" onclick="openPanel();"><i class="material-icons">arrow_back</i></span>
+            <span class="sidebar-tab leaflet-control" title="Login" id="sidebar-login" onclick="selectPanel(this);"><i class="material-icons">person</i></span>
+            <span class="sidebar-tab leaflet-control" title="Empreendimentos" id="sidebar-enterprise" onclick="selectPanel(this);"><i class="material-icons">perm_media</i></span>
+            <span class="sidebar-tab leaflet-control" title="Camadas" id="sidebar-layers" onclick="selectPanel(this);"><i class="material-icons">layers</i></span>
+            <span class="sidebar-tab leaflet-control" title="Atribuições" id="sidebar-attributions" onclick="selectPanel(this);"><i class="material-icons">info_outline</i></span>
+        </div>
+        <div class="sidebar-content">
+            <div id="login">
+                <img class="materialboxed" width="120" src="http://cdn.onlinewebfonts.com/svg/img_568657.png">
+                <div class="input-field col s6">
+                    <input id="username" type="text">
+                    <label for="username">Usuário</label>
+                </div>
+                <div class="input-field col s6">
+                    <input id="password" type="password">
+                    <label for="password">Senha</label>
+                </div>
+            </div>
+            
+            <div id="enterprise">
+                <details class="enterprise_selection">
+                    <summary><strong>Projetos existentes</strong></summary>
+                    <div style="margin-left: 10px;">
+                        <div>
+                            <strong class="project_header" onclick="$(this).next().toggleClass('project_selected');">Praça das nações</strong>
+                            <p class="project">
+                                <b>Descrição:</b> Adição de um parquinho<br>
+                                <b>Processo iniciado em:</b> 29/02/2012<br>
+                                <b>Impacto ambiental:</b> Aceito<br>
+                                <b>Impacto social:</b> Aceito<br>
+                                <b>Situação do processo:</b> Finalizado<br>
+                                <b>Processo atualizado em:</b> 10/04/2016<br>
+                                <b>Observações:</b> Nenhuma
+                            </p>
+                        </div>
+                        <div>
+                            <strong class="project_header" onclick="$(this).next().toggleClass('project_selected');">Autódromo das Américas</strong>
+                            <p class="project">
+                                <b>Descrição:</b> Construção do autódromo<br>
+                                <b>Processo iniciado em:</b> 15/08/2017<br>
+                                <b>Impacto ambiental:</b> Recusado<br>
+                                <b>Impacto social:</b> Aceito<br>
+                                <b>Situação do processo:</b> Em avaliação<br>
+                                <b>Processo atualizado em:</b> 15/08/2017<br>
+                                <b>Observações:</b> Nenhuma
+                            </p>
+                        </div>
+                        <div>
+                            <strong class="project_header" onclick="$(this).next().toggleClass('project_selected');">Parque Barigui</strong>
+                            <p class="project">
+                                <b>Descrição:</b> Manutenção da academia ao ar livre<br>
+                                <b>Processo iniciado em:</b> 16/02/2018<br>
+                                <b>Impacto ambiental:</b> Aceito<br>
+                                <b>Impacto social:</b> Aceito<br>
+                                <b>Situação do processo:</b> Recusado<br>
+                                <b>Processo atualizado em:</b> 10/11/2021<br>
+                                <b>Observações:</b> Projeto com orçamento muito alto
+                            </p>
+                        </div>
+                    </div>
+                </details>
+                
+                <br>
+                <details class="enterprise_selection">
+                    <summary><strong>Novo projeto</strong></summary>
+                    <form class="col s12">
+                        <div class="input-field s6">
+                            <input id="project_name" type="text">
+                            <label for="project_name">Nome do projeto</label>
+                        </div>
+                        <div class="input-field s6">
+                            <input id="description" type="text">
+                            <label for="description">Descrição</label>
+                        </div>
+                        <div class="input-field s12">
+                            <input id="created_date" type="date" onclick="this.value = today();this.disabled = true;">
+                            <label for="created_date">Data de criação</label>
+                        </div>
+                        <div class="input-field s6">
+                            <input id="address" type="text">
+                            <label for="address">Endereço</label>
+                        </div>
+                        <div class="input-field s6">
+                            <input id="goal" type="text">
+                            <label for="goal">Finalidade</label>
+                        </div>
+                        <div class="input-field s6">
+                            <input id="justify" type="text">
+                            <label for="justify">Justificativa</label>
+                        </div>
+                        <div>
+                            <div id="upload_proof_file" onclick="getFile()">Adicionar documentos de comprovação</div>
+                            <div style='height: 0px;width: 0px; overflow:hidden;'>
+                                <input id="upfile" type="file" value="upload" onchange="sub(this)" />
+                            </div>
+                        </div>
+                        <div class="input-field col s6">
+                            <input id="aditional_information" type="text">
+                            <label for="aditional_information">Informações adicionais</label>
+                        </div>
+                      </form>
+                </details>
+            </div>
+
+            <div id="layers">
+                <ul class="collection">
+                    <li class="collection-item avatar">
+                        <img class="circle" src="assets\basemaps\CartoDB_Positron.png">
+                        <span class="title">Google</span>
+                        <p>Imagem de Satélite</p>
+                    </li>
+                    <li class="collection-item avatar">
+                        <img class="circle" src="assets\basemaps\CartoDB_Positron.png">
+                        <span class="title">Esri</span>
+                        <p>Imagem de Satélite</p>
+                    </li>
+                    <li class="collection-item avatar">
+                        <img class="circle" src="assets\basemaps\CartoDB_Positron.png">
+                        <span class="title">Esri</span>
+                        <p>Topográfico</p>
+                    </li>
+                    <li class="collection-item avatar">
+                        <img class="circle" src="assets\basemaps\CartoDB_Positron.png">
+                        <span class="title">OpenStreetMap</span>
+                        <p>Topográfico</p>
+                    </li>
+                    <li class="collection-item avatar">
+                        <img class="circle" src="assets\basemaps\CartoDB_Positron.png">
+                        <span class="title">Carto DB</span>
+                        <p>Positron</p>
+                    </li>
+                    <li class="collection-item avatar">
+                        <img class="circle" src="assets\basemaps\CartoDB_Positron.png">
+                        <span class="title">Carto DB</span>
+                        <p>DarkMatter</p>
+                    </li>
+                    <li class="collection-item avatar">
+                        <img class="circle" src="assets\basemaps\CartoDB_Positron.png">
+                        <span class="title">Stamen</span>
+                        <p>WaterColor</p>
+                    </li>
+                </ul>
+            </div>
+            
+            <div id="attributions">
+                <h5><strong>Sistema de aprovação de alvarás</strong></h3>
+                <ul>
+                    Projeto desenvolvido pelos discentes:
+                    <li>- Felipe Fernandes</li>
+                    <li>- Gabriel Campigoto</li>
+                    <li>- Leonardo Camargo</li>
+                </ul>
+
+                <p><b>Disciplina:</b> Projeto e implantação de SIG</p>
+                <p><b>Docente:</b> Silvana Phillipi Camboim</p>
+            </div>
+        </div>
+    </div>
+
+    <script>var mapping = new Mapping("map");</script>
+</body>
+</html>
