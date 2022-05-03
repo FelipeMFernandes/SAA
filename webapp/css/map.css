@@ -1,0 +1,45 @@
+.leaflet-control-navbar-home {
+    background-image: url(../img/local-position.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 90%;
+}
+
+#watchPosition,
+#watchPositionRun {
+    background-image: url(../img/location.png);
+    background-size: 60%;
+    transition: 0.5s ease-in-out;
+}
+
+#mouseCoordinates,
+#mouseCoordinatesRun {
+    background-image: url(../img/target.png);
+    background-size: 80%;
+    transition: 0.5s ease-in-out;
+}
+
+#watchPositionRun,
+#mouseCoordinatesRun {
+    transition: 0.5s ease-in-out;
+    background-color: #aaf;
+}
+
+/* .leaflet-control-measure-toggle {
+    background-image: url(../img/ruler.png) !important;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain !important;
+}
+
+.leaflet-control-measure a.start {
+    background-image: url(../img/add.png) !important;
+    color: #111;
+} */
+
+.leaflet-compass,
+.leaflet-compass .active {
+    background-color: #00000000 !important;
+    box-shadow: none !important;
+}
+.compass-alert {display: none !important;}

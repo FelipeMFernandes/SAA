@@ -32,21 +32,18 @@ class Mapping {
         this.tools.controlScale = tools.controlScale.addTo(map);
         this.tools.controlNavbar = tools.controlNavbar.addTo(map);
         this.tools.controlFullScreen = tools.controlFullScreen.addTo(map);
-        this.tools.controlMeasureControl = tools.controlMeasureControl.addTo(map);
         this.tools.controlMouseCoordinates = tools.controlMouseCoordinates.addTo(map);
         this.tools.showLocalPosition = tools.showLocalPosition.addTo(map);
         this.tools.showMouseCoordinates = tools.showMouseCoordinates.addTo(map);
         this.tools.controlCompass = tools.controlCompass.addTo(map);
-        // this.tools.print = tools.print.addTo(map);
         this.tools.controlBookmarks = tools.controlBookmarks.addTo(map);
-
-        this.tools.legends = new Layers().makeFrames();
-        // this.tools.legends.forEach(e => e.addTo(map));
+        $(".leaflet-bookmarks-control").removeClass("leaflet-bookmarks-to-right");
+        console.log(this.tools.controlBookmarks)
 
         this.map = map;
 
         this.localPositionMarker = new L.marker(
-            this.getPosition(), {icon: L.icon({iconUrl: "img/local-position.gif", iconSize: [40, 40]})});
+            this.getPosition(), {icon: L.icon({iconUrl: "./img/local-position.gif", iconSize: [40, 40]})});
         this.localPositionRadius = new L.circle(
             this.getPosition(), 0, {weight: 1, color: "blue", fillColor: "#cacaca", fillOpacity: 0.2});
 

@@ -17,7 +17,7 @@ class Tool {
             "true": "Sair do modo Tela Cheia"
         }
     })};
-    get controlBookmarks() {return new L.Control.Bookmarks()};
+    get controlBookmarks() {return new L.Control.Bookmarks({position: "bottomleft"})};
     get controlMeasureControl() {return new L.Control.Measure({
         primaryLengthUnit: "meters",
         secondaryLengthUnit: "kilometers",
