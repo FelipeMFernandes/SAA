@@ -1,10 +1,7 @@
 class Mapping {
     dataInterval = 5
     tools = new Object();
-    layers = {
-        basemap: null,
-        frames: new Object()
-    }
+    layers = new Object();
     localPosition = new Array();
     default = {
         lat: -15,
@@ -19,15 +16,13 @@ class Mapping {
     constructor (container) {
         this.askNavigator();
 
-        let map = new L.map(container, {attributionControl: false});
+        let map = new L.map(container, {attributionControl: true});
         map.setView(this.getPosition(), this.positionZoom);
         
         this.attributions.push("<a href='#' target='_blank'>Sistema de aprovação de alvarás</a>");
         this.attributions.push("<a href='https://visualizador.inde.gov.br/VisualizaCamada/' target='_blank'>INDE</a>");
-
-        this.layers.basemap = new Basemap().CARTODB_Light.addTo(map);
     
-        let tools = new Tool()
+        let tools = new Tool();
         // this.tools.controlAttribuition = tools.controlAttribuition.addTo(map);
         this.tools.controlScale = tools.controlScale.addTo(map);
         this.tools.controlNavbar = tools.controlNavbar.addTo(map);
@@ -38,7 +33,19 @@ class Mapping {
         this.tools.controlCompass = tools.controlCompass.addTo(map);
         this.tools.controlBookmarks = tools.controlBookmarks.addTo(map);
         $(".leaflet-bookmarks-control").removeClass("leaflet-bookmarks-to-right");
-        console.log(this.tools.controlBookmarks)
+
+        this.layers.basemap = new Basemap().CARTODB_Light;
+        this.layers.limites_municipais = new Layer().limites_municipais;
+
+        map.addLayer(this.layers.limites_municipais);
+        
+        this.layers.basemap.addTo(map);
+        // this.layers.layer_group = new L.layerGroup([]);
+        // new L.Control.PanelLayers(
+        //     [],
+        //     this.layers.layer_group,
+        //     {compact: true, collapsibleGroups: true}
+        // ).addTo(map);
 
         this.map = map;
 
@@ -48,6 +55,8 @@ class Mapping {
             this.getPosition(), 0, {weight: 1, color: "blue", fillColor: "#cacaca", fillOpacity: 0.2});
 
         this.tracking = setInterval(() => this.getPosition(), this.dataInterval * 1000);
+
+        L.control.layers({}, {"Limites Municipais": this.layers.limites_municipais}, {collapsed: false}).addTo(this.map);
     }
 
     get positionZoom() {

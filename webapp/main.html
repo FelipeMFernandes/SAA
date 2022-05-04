@@ -42,9 +42,6 @@
     <!-- Compass -->
     <script src="https://opengeo.tech/maps/leaflet-compass/src/leaflet-compass.js"></script>
     <link rel="stylesheet" href="https://opengeo.tech/maps/leaflet-compass/src/leaflet-compass.css">
-    <!-- Legend -->
-    <script src="https://ptma.github.io/Leaflet.Legend/src/leaflet.legend.js"></script>
-    <link rel="stylesheet" href="https://ptma.github.io/Leaflet.Legend/src/leaflet.legend.css">
 
     <!-- Local -->
     <link type="text/css" rel="stylesheet" href=".\main.css">
@@ -52,6 +49,7 @@
     <link type="text/css" rel="stylesheet" href=".\css\sidebar.css">
     <script type="text/javascript" src=".\js\basemaps.js"></script>
     <script type="text/javascript" src=".\js\tools.js"></script>
+    <script type="text/javascript" src=".\js\layers.js"></script>
     <script type="text/javascript" src=".\js\mapping.js"></script>
     <script type="text/javascript" src=".\js\utils.js"></script>
     <script type="text/javascript" src=".\js\sidebar.js"></script>
@@ -63,7 +61,7 @@
             <span class="sidebar-tab leaflet-control" title="Abrir painel" id="sidebar-icon" onclick="openPanel();"><i class="material-icons">arrow_back</i></span>
             <span class="sidebar-tab leaflet-control" title="Login" id="sidebar-login" onclick="selectPanel(this);"><i class="material-icons">person</i></span>
             <span class="sidebar-tab leaflet-control" title="Empreendimentos" id="sidebar-enterprise" onclick="selectPanel(this);"><i class="material-icons">perm_media</i></span>
-            <span class="sidebar-tab leaflet-control" title="Camadas" id="sidebar-layers" onclick="selectPanel(this);"><i class="material-icons">layers</i></span>
+            <!-- <span class="sidebar-tab leaflet-control" title="Camadas" id="sidebar-layers" onclick="selectPanel(this);"><i class="material-icons">layers</i></span> -->
             <span class="sidebar-tab leaflet-control" title="Atribuições" id="sidebar-attributions" onclick="selectPanel(this);"><i class="material-icons">info_outline</i></span>
         </div>
         <div class="sidebar-content">
@@ -164,7 +162,7 @@
                       </form>
                 </details>
             </div>
-
+<!-- 
             <div id="layers">
                 <ul class="collection">
                     <li class="collection-item avatar">
@@ -203,7 +201,7 @@
                         <p>WaterColor</p>
                     </li>
                 </ul>
-            </div>
+            </div> -->
             
             <div id="attributions">
                 <h6><strong>SAA - Sistema de aprovação de alvarás</strong></h6>
