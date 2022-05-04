@@ -16,7 +16,7 @@ class Mapping {
     constructor (container) {
         this.askNavigator();
 
-        let map = new L.map(container, {attributionControl: true});
+        let map = new L.map(container, {attributionControl: true, zoomMin: 11});
         map.setView(this.getPosition(), this.positionZoom);
         
         this.attributions.push("<a href='#' target='_blank'>Sistema de aprovação de alvarás</a>");
@@ -34,19 +34,14 @@ class Mapping {
         this.tools.controlBookmarks = tools.controlBookmarks.addTo(map);
         $(".leaflet-bookmarks-control").removeClass("leaflet-bookmarks-to-right");
 
-        this.layers.basemap = new Basemap().CARTODB_Light;
-        this.layers.limites_municipais = new Layer().limites_municipais;
+        this.layers.basemap = new Basemap().CARTODB_Light.addTo(map);
+        this.layers.limites_municipais = new Layer().limites_municipais.addTo(map);
+        this.layers.zoneamento = new Layer().zoneamento;
+        this.layers.malha_viaria = new Layer().malha_viaria;
+        this.layers.base_alvaras = new Layer().base_alvaras;
 
-        map.addLayer(this.layers.limites_municipais);
-        
-        this.layers.basemap.addTo(map);
-        // this.layers.layer_group = new L.layerGroup([]);
-        // new L.Control.PanelLayers(
-        //     [],
-        //     this.layers.layer_group,
-        //     {compact: true, collapsibleGroups: true}
-        // ).addTo(map);
-
+        map.fitBounds(this.layers.zoneamento.getBounds())
+        map.setMaxBounds(this.layers.limites_municipais.getBounds())
         this.map = map;
 
         this.localPositionMarker = new L.marker(
@@ -56,7 +51,12 @@ class Mapping {
 
         this.tracking = setInterval(() => this.getPosition(), this.dataInterval * 1000);
 
-        L.control.layers({}, {"Limites Municipais": this.layers.limites_municipais}, {collapsed: false}).addTo(this.map);
+        L.control.layers({}, {
+            "Limites Municipais": this.layers.limites_municipais,
+            "Zoneamento": this.layers.zoneamento,
+            "Malha Viária": this.layers.malha_viaria,
+            "Base de Alvarás": this.layers.base_alvaras
+        }, {collapsed: false}).addTo(this.map);
     }
 
     get positionZoom() {
